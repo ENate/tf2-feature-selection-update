@@ -23,4 +23,3 @@ class ParseArgs(object):
 
 if __name__ == "__main__":
     ParseArgs([3, 2])
-

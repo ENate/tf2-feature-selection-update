@@ -46,13 +46,24 @@ class ModelTrainingParametersTests(TestCase):
         self.model_types = self.trainingModel.tf_keras_mlp_model(self.trainingModel.input_features)
         self.assertEqual(type(self.model_types), tf.python.keras.engine.training.Model)
 
-    def test_loss_function_keras(self, model):
+    def test_loss_function_from_scratch(self): # , choose_val, w_sizes, p_kwargs):
+        """Function to test entropy loss for the MLP model prior to training
+        """
+        self.param_val, self.sec_kwargs = 1, 2
+        self.r_sum = self.trainingModel.loss_function_from_scratch(self.sec_kwargs, self.param_val, 1, 1, 1)
+        self.assertEqual(self.r_sum, 3)
+    
+    
+    def test_loss_function_keras(self):
         """Construct the loss function and arrange
 
         Args:
-            model (Keras): The keras model object class.
+            model (Keras class): The keras model object class.
+
         """
-        pass
+        # build a keras loss using return values from build_network method.
+        self.model = self.trainingModel.loss_function_keras(2)
+        self.assertEqual(self.model, 4)
 
 # Define a class to pytest parse_arg values
 
