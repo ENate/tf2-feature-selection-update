@@ -80,6 +80,11 @@ class ArgParseTestCase(TestCase):
             # testing version message requires redirecting stdout
     # similarly for a misc_opts test
 
+class TestMainTrainingClass(TestCase):
+
+    def setUp(self):
+        return MainTrainingClass(tensor_value)
+
 
 if __name__=='__main__':
     unittest.main()

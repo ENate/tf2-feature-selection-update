@@ -89,16 +89,16 @@ class ModelTrainingParameters:
         self.model.summary()
         return self.model
 
-    def loss_function_keras(self, x_train_scale, y_train_scale, x_val_scale):
+    def loss_function_keras(self, model, x_train_scale, y_train_scale, x_val_scale):
         """Creates the loss for keras model
 
         Args:
             model (int): create loss from tf.keras  
         """
         model.compile(loss='mse', optimizer='adam', metrics=['mse','mae'])
-        history=model.fit(x_train_scale, y_train_scale, epochs=30, batch_size=150, verbose=1, validation_split=0.2)
-        predictions = model.predict(x_val_scale)
-        return history, predictions
+        self.history=model.fit(x_train_scale, y_train_scale, epochs=30, batch_size=150, verbose=1, validation_split=0.2)
+        self.predictions = model.predict(x_val_scale)
+        return self.history, self.predictions
 
     def fit_function_keras(self, model):
         """Organize function to train model
