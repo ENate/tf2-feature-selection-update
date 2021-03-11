@@ -16,6 +16,7 @@ class ParseArgs(object):
         """
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument('--mlp_hid_structure', action='store', type=object, required=True)
+        self.parser.add_argument('--optimizer', action='store', type=object, required=False)
         self.training_args = self.parser.parse_args()
         print(self.training_args)
         return self.training_args

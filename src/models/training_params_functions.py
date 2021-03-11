@@ -73,21 +73,40 @@ class ModelTrainingParameters:
         classify_y_hat = tf.matmul(classify_y_hat, w_classify[-1]) + b_classify
         if choose_val == 1:
             self.optimal_loss = tf.reduce_sum(tf.math.sigmoid_cross_entropy)
-        return self.r_sum
+        return self.optimal_loss
     
 
-    def loss_function_keras(self, input_dimension):
-        """Create the tf.keras function before training
+    def mlp_function_keras(self, input_dimension):
+        """Create the tf.keras mlp structure in keras before training
 
         Args:
             model (object): A loss function created using the keras functional API
         """
         self.model = tf.Sequential()
-        self.model.add(Dense(12, input_dim=input_dimension, kernel_initializer='normal', activation='relu'))
-        self.model.add(Dense(8, activation='relu'))
-        self.model.add(Dense(1, activation='linear'))
+        self.model.add(keras.layers.Dense(12, input_dim=input_dimension, kernel_initializer='normal', activation='relu'))
+        self.model.add(keras.layers.Dense(8, activation='relu'))
+        self.model.add(keras.layers.Dense(1, activation='linear'))
         self.model.summary()
         return self.model
+
+    def loss_function_keras(self, x_train_scale, y_train_scale, x_val_scale):
+        """Creates the loss for keras model
+
+        Args:
+            model (int): create loss from tf.keras  
+        """
+        model.compile(loss='mse', optimizer='adam', metrics=['mse','mae'])
+        history=model.fit(x_train_scale, y_train_scale, epochs=30, batch_size=150, verbose=1, validation_split=0.2)
+        predictions = model.predict(x_val_scale)
+        return history, predictions
+
+    def fit_function_keras(self, model):
+        """Organize function to train model
+
+        Args:
+            model (int): A model object from the tf.keras layer class.
+        """
+        pass
 
 
 if __name__ == "__main__":
