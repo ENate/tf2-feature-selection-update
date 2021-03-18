@@ -49,11 +49,11 @@ class ModelTrainingParametersTests(TestCase):
         x1 = np.random.randn(set_pts, input_n)
         x2 = np.random.randn(set_pts, 2)
         n_neurons, shape_lst, sizes_lst, l_hidden = self.trainingModel.build_network()
-        dict_params = {'choose_val': 1, 'l_hidden': l_hidden, 'wb_sizes': sizes_lst, 'nclasses': class_val, 'n': input_n}
+        dict_params = {'choose_val': 1, 'wb_shapes': shape_lst, 'l_hidden': l_hidden, 'wb_sizes': sizes_lst, 'nclasses': class_val, 'n': input_n}
         self.initializer = tf.initializers.GlorotNormal(43)
         params_0 = tf.Variable(self.initializer([n_neurons], dtype=tf.float64))
         loss_from_scratch = self.trainingModel.loss_function_from_scratch(dict_params, params_0, x1, x2)
-        # print(loss_from_scratch)
+        print(loss_from_scratch)
     
     def test_loss_function_keras(self):
         """Construct the loss function and arrange

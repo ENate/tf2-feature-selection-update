@@ -67,17 +67,29 @@ class ModelTrainingParameters:
             w_sizes (Array object): An array of weight sizes in each layer
             p_kwargs (dict object): User defined parameters types
         """
+        # Variable initialization
         self.x_classify = x_classify # tf.Variable(tf.float64, shape=[None, sec_kwargs['n']])
         self.y_classify = y_classify # tf.Variable(tf.float64, shape=[None, sec_kwargs['nclasses']])
         classify_tensors_split = tf.split(param_values, sec_kwargs['wb_sizes'], 0)
+        
+        # reshape weights and biases
+        for i in range(len(classify_tensors_split)):
+            classify_tensors_split[i] = tf.reshape(classify_tensors_split[i], sec_kwargs['wb_shapes'][i])
+        
+        # identify weights and biases
         w_classify = classify_tensors_split[0:][::2] # split tensors
-        b_classify = classify_tensors_split[0:][::2]
-        classify_y_hat = self.x_classify # initialize for convenience
+        b_classify = classify_tensors_split[1:][::2]
+
+        # Build models
+        classify_y_hat = x_classify # initialize for convenience
         for k in range(len(sec_kwargs['l_hidden'])):
-            classify_y_hat = tf.math.sigmoid(tf.matmul(classify_y_hat, w_classify[k]) + b_classify[k])
-        classify_y_hat = tf.matmul(classify_y_hat, w_classify[-1]) + b_classify
+            classify_y_hat = tf.keras.activations.sigmoid(tf.matmul(classify_y_hat, w_classify[k]) + b_classify[k])
+        classify_y_hat = tf.matmul(classify_y_hat, w_classify[-1]) + b_classify[-1]
+        
+        # Build loss function
         if sec_kwargs['choose_val'] == 1:
-            self.optimal_loss = tf.reduce_sum(tf.math.sigmoid_cross_entropy)
+            self.optimal_loss = tf.reduce_sum(tf.nn.sigmoid_cross_entropy_with_logits(y_classify, classify_y_hat))
+        print(self.optimal_loss)
         return self.optimal_loss
     
 
@@ -116,8 +128,10 @@ class ModelTrainingParameters:
 if __name__ == "__main__":
     in_feats_dim = keras.Input(shape=(3, 2), name="Inputs")
     mlp_hid = [3, 2]
-    n_in, n_class = 3, 4
+    n_in, n_class = 2, 2
     # ModelTrainingParameters(n_in, mlp_hid, n_class).tf_keras_mlp_model()
-    # ModelTrainingParameters(n_in, mlp_hid, n_class).build_network()
+    a, b, c, d = ModelTrainingParameters(n_in, mlp_hid, n_class).build_network()
+
+    print(b)
 
     

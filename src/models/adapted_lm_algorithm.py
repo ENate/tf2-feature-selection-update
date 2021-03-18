@@ -27,7 +27,7 @@ class ParseArgs:
         self.num_mlp_hidden_layers = mlp_hidden_layers
         self.mlp_num_features = mlp_num_features
         self.mlp_classes = mlp_num_classes
-        self.allDatasets = AllDatasets()
+        self.allDatasets = AllDatasets(4)
         self.modelTrainingParameters = ModelTrainingParameters(self.mlp_num_features, self.num_mlp_hidden_layers, self.mlp_classes)
 
     
