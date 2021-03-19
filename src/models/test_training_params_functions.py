@@ -8,8 +8,8 @@ from tensorflow import keras
 __path__ = [os.path.dirname(os.path.abspath(__file__))]
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from unittest import TestCase
-from .training_params_functions import ModelTrainingParameters
-from .adapted_lm_algorithm import ParseArgs
+from adapted_lm_algorithm import ParseArgs
+from training_params_functions import ModelTrainingParameters
 
 class ModelTrainingParametersTests(TestCase):
 
@@ -45,13 +45,20 @@ class ModelTrainingParametersTests(TestCase):
     def test_loss_function_from_scratch(self): 
         """Function to test entropy loss for the MLP model prior to training
         """
+        # Initialize parameters
         set_pts, input_n, class_val = 100, 3, 2
         x1 = np.random.randn(set_pts, input_n)
         x2 = np.random.randn(set_pts, 2)
+
+        # Return number of parameters and network structure
         n_neurons, shape_lst, sizes_lst, l_hidden = self.trainingModel.build_network()
         dict_params = {'choose_val': 1, 'wb_shapes': shape_lst, 'l_hidden': l_hidden, 'wb_sizes': sizes_lst, 'nclasses': class_val, 'n': input_n}
+        
+        # Initialize Glorot Normal
         self.initializer = tf.initializers.GlorotNormal(43)
         params_0 = tf.Variable(self.initializer([n_neurons], dtype=tf.float64))
+
+        # Loss function
         loss_from_scratch = self.trainingModel.loss_function_from_scratch(dict_params, params_0, x1, x2)
         print(loss_from_scratch)
     
@@ -87,13 +94,6 @@ class ArgParseTestCase(TestCase):
             self.args_class.parse_command_line_argument_function()
             # testing version message requires redirecting stdout
     # similarly for a misc_opts test
-
-class DatasetTests(TestCase):
-    """Pre-processing and testing data set functions"""
-    def setUp(self):
-        """Testing the datasets"""
-        pass
-        
 
 
 if __name__=='__main__':

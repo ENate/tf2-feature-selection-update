@@ -114,6 +114,7 @@ class ModelTrainingParameters:
         model.compile(loss='mse', optimizer='adam', metrics=['mse','mae'])
         self.history=model.fit(x_train_scale, y_train_scale, epochs=30, batch_size=10, verbose=1, validation_split=0.2)
         self.predictions = model.predict(x_val_scale)
+        print('Working.....')
         return self.history, self.predictions
 
     def fit_function_keras(self, model):

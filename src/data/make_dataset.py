@@ -16,6 +16,15 @@ def main(input_filepath, output_filepath):
     logger.info('making final data set from raw data')
 
 
+def data_one_preprocessing(file_dat):
+    """Pre-process one data set prior to training
+
+    Args:
+        file_dat (file): A csv file containing the data set.
+    """
+    return file_dat
+
+
 if __name__ == '__main__':
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_fmt)

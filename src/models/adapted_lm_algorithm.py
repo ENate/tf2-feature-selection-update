@@ -6,10 +6,11 @@ from tensorflow import keras
 from tensorflow.keras import layers
 sys.path.append("../features/")
 sys.path.append("../data/")
+sys.path.append(".")
 __path__ = [os.path.dirname(os.path.abspath(__file__))]
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from .training_params_functions import ModelTrainingParameters
-from ..features.build_features import AllDatasets
+from build_features import AllDatasets
+from make_dataset import data_one_preprocessing
+from training_params_functions import ModelTrainingParameters
 
 SEED=42
 INITIALIZERS = {'xavier': tf.initializers.GlorotNormal(seed=SEED), 'rand_uniform': tf.initializers.random_normal(seed=SEED), 'rand_normal': tf.initializers.random_uniform(seed=SEED)}
@@ -86,11 +87,12 @@ class ParseArgs:
         modelKeras = self.modelTrainingParameters.mlp_function_keras(3)
         return modelKeras, modelKeras0
 
-    def load_all_datasets(self):
+    def load_all_datasets(self, four_value):
         """Load pre-processed features and outputs prior to training
         """
-        allDatasets = self.allDatasets().toy_data_set()
-        print(allDatasets.shape)
+        all_dat, all_y, dataset = self.allDatasets.toy_data_set(four_value)
+        print(all_dat.shape)
+        return all_dat, all_y, dataset
 
 if __name__ == "__main__":
     parseArgs = ParseArgs(2, [3, 2], 2)
@@ -105,3 +107,7 @@ if __name__ == "__main__":
     kerasMosel, kerasMosel2 = parseArgs.analyze_losses_before_training(feat_obj)
     print(kerasMosel2.summary())
     # First toy data set
+    d, y, y_cts = parseArgs.load_all_datasets(4)
+    print(d.shape)
+    print(y.shape)
+    print(y_cts.shape)
