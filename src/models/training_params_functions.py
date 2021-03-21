@@ -117,22 +117,17 @@ class ModelTrainingParameters:
         print('Working.....')
         return self.history, self.predictions
 
-    def fit_function_keras(self, model):
-        """Organize function to train model
-
-        Args:
-            model (int): A model object from the tf.keras layer class.
-        """
-        pass
-
 
 if __name__ == "__main__":
     in_feats_dim = keras.Input(shape=(3, 2), name="Inputs")
     mlp_hid = [3, 2]
     n_in, n_class = 2, 2
-    # ModelTrainingParameters(n_in, mlp_hid, n_class).tf_keras_mlp_model()
+    model = ModelTrainingParameters(n_in, mlp_hid, n_class).tf_keras_mlp_model(in_feats_dim)
+    sec_model = ModelTrainingParameters(n_in, mlp_hid, n_class).mlp_function_keras(4)
     a, b, c, d = ModelTrainingParameters(n_in, mlp_hid, n_class).build_network()
 
     print(b)
+    print(model.summary())
+    print(sec_model.summary())
 
     
